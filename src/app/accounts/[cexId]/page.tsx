@@ -1,16 +1,20 @@
 "use client";
 
+import { cexes } from "@/app/data/cex";
 import { CurrencyAccountsList } from "@/components/CurrencyAccountsList";
 import { CexCurrencyAccount, schemaGetAccountResponse } from "@/types/api";
+import { CexId } from "@/types/cex";
 import { useEffect, useState } from "react";
 
-export default function Accounts() {
+export default function Accounts({ params }: { params: { cexId: CexId }}) {
+  const { cexId } = params;
+  const cex = cexes[cexId];
   const [loading, setLoading] = useState<boolean>(true);
   const [accounts, setAccounts] = useState<CexCurrencyAccount[]>([]);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/accounts/coinbase`).then(async (response) => {
+    fetch(`/api/accounts/${cexId}`).then(async (response) => {
       const rawData = await response.json();
 
       const data = schemaGetAccountResponse.parse(rawData);
@@ -33,7 +37,7 @@ export default function Accounts() {
         {loading ? (
           <div className="items-center justify-center p-3 text-neutral-500 border-2 border-dashed border-neutral-500 rounded-lg">
             <p className="text-center">
-              Syncing with {"Coinbase"}
+              Syncing with {cex.name}
             </p>
           </div>
         ) : (
