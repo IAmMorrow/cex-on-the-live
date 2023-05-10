@@ -20,3 +20,18 @@ export const schemaGetAccountResponse = z.object({
 });
 
 export type GetAccountResponse = z.infer<typeof schemaGetAccountResponse>;
+
+export const schemaCexAccountAddress = z.object({
+    "id": z.string(),
+    "address": z.string(),
+    "name": z.string(),
+    "created_at": z.string(),
+    "updated_at": z.string(),
+    "network": z.string(),
+});
+
+export type CexAccountAddress = z.infer<typeof schemaCexAccountAddress>;
+
+const schemaGetAddressesResponse = z.object({
+    accounts: z.array(schemaCexCurrencyAccount),
+});
