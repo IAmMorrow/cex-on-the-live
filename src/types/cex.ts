@@ -5,5 +5,10 @@ export type CoinbaseAuth = {
     token: string;
   }
   
-  export type CexAuth = CoinbaseAuth // extend with new auth types
+export type CexAuth = CoinbaseAuth // extend with new auth types
   
+export type Cex = {
+  id: CexId,
+  name: string,
+  imageUrl: string,
+}
