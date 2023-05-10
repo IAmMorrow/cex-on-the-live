@@ -5,6 +5,7 @@ export const schemaCexCurrencyAccount = z.object({
     name: z.string(),
     currency: z.string(),
     balance: z.string(),
+    ticker: z.string(),
 });
 
 export type CexCurrencyAccount = z.infer<typeof schemaCexCurrencyAccount>;

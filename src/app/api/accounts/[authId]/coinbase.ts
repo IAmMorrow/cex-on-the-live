@@ -10,7 +10,8 @@ function coinbaseCurrencyAccountToAccount(account: CoinbaseCurrencyAccount): Cex
         id: account.id,
         balance: account.balance.amount,
         name: account.name,
-        currency: account.currency.name
+        currency: account.currency.name,
+        ticker: account.currency.code,
     }
 }
 

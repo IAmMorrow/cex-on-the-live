@@ -22,7 +22,7 @@ const handler = NextAuth({
     async jwt({ token, account, profile }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account && account.access_token) {
-        //not sure we need to pass the access token here
+        // not sure we need to pass the access token here
 
         if (!token.auths) {
             token.auths = {};
