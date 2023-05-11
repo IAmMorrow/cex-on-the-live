@@ -33,6 +33,7 @@ const sendTransaction: CexSendHandler = async (auth: CexAuth, accountId: string,
   const response = await fetch(getEndpointURL(accountId), options);
 
   if (!response.ok) {
+    console.log(JSON.stringify(await response.json(), null, 2))
     throw new Error(`error ${response.status}`);
   }
 
