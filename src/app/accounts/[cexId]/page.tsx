@@ -1,49 +1,94 @@
 "use client";
 
-import { cexes } from "@/app/data/cex";
-import { CurrencyAccountsList } from "@/components/CurrencyAccountsList";
-import { CexCurrencyAccount, schemaGetAccountResponse } from "@/types/api";
+import { Stepper } from "@/components/Stepper";
+import { schemaGetAccountResponse } from "@/types/api";
 import { CexId } from "@/types/cex";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { AppState } from "./type";
+import StepSelectAccount from "./StepSelectAccount";
+import StepSelectAmount from "./StepSelectAmount";
 
-export default function Accounts({ params }: { params: { cexId: CexId }}) {
+const initialState: AppState = {
+  cexAccounts: {
+    status: "idle",
+  },
+  fromAccount: null,
+  amount: null,
+  toAccount: null,
+};
+
+export default function Accounts({ params }: { params: { cexId: CexId } }) {
   const { cexId } = params;
-  const cex = cexes[cexId];
-  const [loading, setLoading] = useState<boolean>(true);
-  const [accounts, setAccounts] = useState<CexCurrencyAccount[]>([]);
+
+  const [state, setState] = useState<AppState>(initialState);
+
+  const loadAccounts = useCallback(async () => {
+    try {
+      setState((oldState) => ({
+        ...oldState,
+        cexAccounts: {
+          status: "pending",
+        },
+      }));
+
+      const response = await fetch(`/api/accounts/${cexId}`);
+      const rawData = await response.json();
+      const { accounts } = schemaGetAccountResponse.parse(rawData);
+
+      setState((oldState) => ({
+        ...oldState,
+        cexAccounts: {
+          status: "success",
+          data: accounts,
+        },
+      }));
+    } catch (error) {
+      setState((oldState) => ({
+        ...oldState,
+        cexAccounts: {
+          status: "error",
+          error,
+        },
+      }));
+    }
+  }, [cexId]);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/accounts/${cexId}`).then(async (response) => {
-      const rawData = await response.json();
+    if (state.cexAccounts.status === "idle") {
+      loadAccounts();
+    }
+  }, [loadAccounts, state.cexAccounts.status]);
 
-      const data = schemaGetAccountResponse.parse(rawData);
+  const currentStep = useMemo(() => {
+    if (state.toAccount !== null) {
+      return 3;
+    }
 
-      setAccounts(data.accounts.filter(account => parseInt(account.balance) > 0))
-    }).finally(() => {
-      setLoading(false);
-    });
-  }, []);
+    if (state.amount !== null) {
+      return 2;
+    }
+
+    if (state.fromAccount !== null) {
+      return 1;
+    }
+
+    return 0;
+  }, [state]);
+
+  console.log(state);
 
   return (
-    <div className="flex min-h-screen flex-col mt-9 w-full p-10">
-      <h1 className="font-semibold text-2xl">
-        Choose an asset to transfer
-      </h1>
-      <p className="font-regular text-small text-neutral-500 mt-2">
-        Some assets might not be supported by Ledger and so may not display here.
-      </p>
-      <div className="flex flex-col my-6 w-full">
-        {loading ? (
-          <div className="items-center justify-center p-3 text-neutral-500 border-2 border-dashed border-neutral-500 rounded-lg">
-            <p className="text-center">
-              Syncing with {cex.name}
-            </p>
-          </div>
-        ) : (
-          <CurrencyAccountsList accounts={accounts} />
-        )}
-      </div>
+    <div className="flex flex-col">
+      <Stepper currentStep={currentStep} maxStep={4} />
+      {currentStep === 0 ? (
+        <StepSelectAccount state={state} setState={setState} cexId={cexId} />
+      ) : currentStep === 1 ? (
+        <StepSelectAmount state={state} setState={setState} cexId={cexId} />
+      ) : currentStep === 2 ? (
+        "todo"
+      ) : currentStep === 3 ? (
+        "todo"
+      ) : null}
     </div>
   );
 }

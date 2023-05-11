@@ -17,8 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <WalletAPIProviderWrapper>{children}</WalletAPIProviderWrapper>
+      <body className={`${inter.className} px-4 w-full`}>
+        <main className="pt-6 w-full h-screen">
+          <WalletAPIProviderWrapper>{children}</WalletAPIProviderWrapper>
+        </main>
       </body>
     </html>
   );

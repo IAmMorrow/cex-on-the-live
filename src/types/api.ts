@@ -1,7 +1,9 @@
 import { z } from "zod";
+import { schemaCexId } from "./cex";
 
 export const schemaCexCurrencyAccount = z.object({
     id: z.string(),
+    cexId: schemaCexId,
     name: z.string(),
     currency: z.string(),
     balance: z.string(),

@@ -1,4 +1,8 @@
-export type CexId = "coinbase" | "binance" | "kraken" | "metamask";
+import { z } from "zod";
+
+export const schemaCexId = z.enum(["coinbase", "binance", "kraken", "metamask"]);
+
+export type CexId = z.infer<typeof schemaCexId>;
 
 export type CoinbaseAuth = {
     cexId: CexId;
