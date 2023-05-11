@@ -1,10 +1,13 @@
 import { z } from "zod";
+import { schemaCexId } from "./cex";
 
 export const schemaCexCurrencyAccount = z.object({
     id: z.string(),
+    cexId: schemaCexId,
     name: z.string(),
     currency: z.string(),
     balance: z.string(),
+    ticker: z.string(),
 });
 
 export type CexCurrencyAccount = z.infer<typeof schemaCexCurrencyAccount>;
@@ -32,6 +35,26 @@ export const schemaCexAccountAddress = z.object({
 
 export type CexAccountAddress = z.infer<typeof schemaCexAccountAddress>;
 
-const schemaGetAddressesResponse = z.object({
-    accounts: z.array(schemaCexCurrencyAccount),
+export const schemaGetAddressesResponse = z.object({
+    addresses: z.array(schemaCexAccountAddress),
 });
+
+export type GetAddressesResponse = z.infer<typeof schemaGetAddressesResponse>;
+
+
+
+
+export const schemaSendTransactionParams = z.object({
+    currency: z.string(),
+    amount: z.string(),
+    to: z.string(),
+    twoFactorCode: z.string().optional(),
+});
+
+export type GetSendTransactionParams = z.infer<typeof schemaSendTransactionParams>;
+
+export const schemaSendTransactionResponse = z.object({
+    result: z.enum(["OK", "2FA"])
+});
+
+export type SendTransactionResponse = z.infer<typeof schemaSendTransactionResponse>;

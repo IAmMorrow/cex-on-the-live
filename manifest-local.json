@@ -1,0 +1,43 @@
+{
+  "id": "cex-on-the-live",
+  "name": "Cex on the live",
+  "private": false,
+  "url": "http://localhost:3000",
+  "params": {},
+  "homepageUrl": "https://market.ledger.com/",
+  "supportUrl": "https://market.ledger.com/",
+  "icon": "https://cdn.live.ledger.com/icons/platform/lmarket.png",
+  "platform": "all",
+  "apiVersion": "^2.0.0 || ~0.0.1",
+  "manifestVersion": "1",
+  "branch": "stable",
+  "categories": ["nft"],
+  "currencies": "*",
+  "content": {
+    "shortDescription": {
+      "en": "[ Ledger ] Market is the most secure platform for artists and brands to release their NFTs"
+    },
+    "description": {
+      "en": "[ L ] Market is the most secure platform for artists and brands to release their NFTs. For first access to exclusive collaborations, and Ledger hardware, software and services, become a [ Ledger ] Market Pass holder."
+    }
+  },
+  "permissions": [
+    "account.list",
+    "account.receive",
+    "account.request",
+    "currency.list",
+    "device.close",
+    "device.exchange",
+    "device.transport",
+    "message.sign",
+    "transaction.sign",
+    "transaction.signAndBroadcast",
+    "storage.set",
+    "storage.get",
+    "bitcoin.getXPub",
+    "wallet.capabilities",
+    "wallet.userId",
+    "wallet.info"
+  ],
+  "domains": ["https://*"]
+}

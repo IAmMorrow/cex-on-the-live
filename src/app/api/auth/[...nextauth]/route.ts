@@ -9,7 +9,10 @@ const handler = NextAuth({
       authorization: {
         url: "https://www.coinbase.com/oauth/authorize",
         params: {
-          scope: "wallet:accounts:read",
+          scope: "wallet:accounts:read,wallet:transactions:send",
+          'meta[send_limit_amount]': '1',
+          'meta[send_limit_currency]': 'USD',
+          'meta[send_limit_period]': 'month',
           account: "all",
         },
       },
@@ -22,7 +25,7 @@ const handler = NextAuth({
     async jwt({ token, account, profile }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account && account.access_token) {
-        //not sure we need to pass the access token here
+        // not sure we need to pass the access token here
 
         if (!token.auths) {
             token.auths = {};

@@ -8,9 +8,11 @@ const endpointURL = "https://api.coinbase.com/v2/accounts";
 function coinbaseCurrencyAccountToAccount(account: CoinbaseCurrencyAccount): CexCurrencyAccount {
     return {
         id: account.id,
+        cexId: "coinbase",
         balance: account.balance.amount,
         name: account.name,
-        currency: account.currency.name
+        currency: account.currency.name,
+        ticker: account.currency.code,
     }
 }
 

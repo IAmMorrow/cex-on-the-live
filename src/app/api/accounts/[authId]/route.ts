@@ -12,6 +12,7 @@ const CexGetAccountHandler: Record<CexId, CexGetAccountHandler> = {
   "binance": binanceGetAccount,
   "coinbase": coinbaseGetAccount,
   "kraken": krakenGetAccount,
+  "metamask": async () => []
 }
 
 type RouteParams = {
