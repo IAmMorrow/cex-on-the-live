@@ -40,3 +40,14 @@ export const schemaGetAddressesResponse = z.object({
 });
 
 export type GetAddressesResponse = z.infer<typeof schemaGetAddressesResponse>;
+
+
+
+
+export const schemaSendTransactionParams = z.object({
+    currency: z.string(),
+    amount: z.string(),
+    to: z.string(),
+});
+
+export type GetSendTransactionParams = z.infer<typeof schemaSendTransactionParams>;

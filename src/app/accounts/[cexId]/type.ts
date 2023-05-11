@@ -5,6 +5,6 @@ export type AppState = {
     cexAccounts: Loadable<CexCurrencyAccount[]>;
     fromAccount: string | null;
     toAccount: string | null;
-    amount: number | null;
+    amount: string | null;
   };
   

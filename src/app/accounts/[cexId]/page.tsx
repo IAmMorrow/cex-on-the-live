@@ -7,6 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppState } from "./type";
 import StepSelectAccount from "./StepSelectAccount";
 import StepSelectAmount from "./StepSelectAmount";
+import StepSelectLiveAccount from "./StepSelectLiveAccount";
+import StepSummary from "./StepSummary";
 
 const initialState: AppState = {
   cexAccounts: {
@@ -78,16 +80,20 @@ export default function Accounts({ params }: { params: { cexId: CexId } }) {
   console.log(state);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       <Stepper currentStep={currentStep} maxStep={4} />
       {currentStep === 0 ? (
         <StepSelectAccount state={state} setState={setState} cexId={cexId} />
       ) : currentStep === 1 ? (
         <StepSelectAmount state={state} setState={setState} cexId={cexId} />
       ) : currentStep === 2 ? (
-        "todo"
+        <StepSelectLiveAccount
+          state={state}
+          setState={setState}
+          cexId={cexId}
+        />
       ) : currentStep === 3 ? (
-        "todo"
+        <StepSummary state={state} setState={setState} cexId={cexId} />
       ) : null}
     </div>
   );

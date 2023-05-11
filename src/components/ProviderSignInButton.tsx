@@ -34,8 +34,8 @@ export function ProviderSignInButton(props: ProviderSignInButtonProps) {
         <p className="ml-3">{cex.name}</p>
       </div>
       {comingSoon ? (
-        <div className="bg-neutral-600 rounded-md p-1">
-          <p className="text-sm">Coming soon</p>
+        <div className="bg-neutral-600 rounded-md py-1 px-2">
+          <p className="text-xs">Coming soon</p>
         </div>
       ) : null}
     </Row>

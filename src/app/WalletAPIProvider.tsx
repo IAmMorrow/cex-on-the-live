@@ -23,7 +23,7 @@ function getWalletAPITransport(simulator?: boolean): Transport {
   return transport;
 }
 
-const transport = getWalletAPITransport(true);
+const transport = getWalletAPITransport(false);
 
 type WalletAPIProviderWrapperProps = {
   children: React.ReactElement;

@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} px-4 w-full`}>
-        <main className="pt-6 w-full h-screen">
+        <main className="pt-6 w-full h-screen flex">
           <WalletAPIProviderWrapper>{children}</WalletAPIProviderWrapper>
         </main>
       </body>
