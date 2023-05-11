@@ -75,7 +75,7 @@ export default function StepSummary(props: StepSummaryProps) {
 
     const params = new URLSearchParams();
     params.set("to", liveAccount.address);
-    params.set("currency", cexAccount.currency);
+    params.set("currency", cexAccount.ticker);
     params.set("amount", state.amount);
 
     console.log(`/api/send/${cexId}/${state.fromAccount}?${params.toString()}`);
