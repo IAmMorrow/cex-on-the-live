@@ -29,6 +29,10 @@ const getAccount: CexGetAccountHandler = async (auth: CexAuth) => {
 
   const response = await fetch(endpointURL, options);
 
+  if (!response.ok) {
+    throw new Error(`error ${response.status}`);
+  }
+
   const rawData = await response.json();
 
   const { data } = schemaCoinbaseGetAccountResponse.parse(rawData);

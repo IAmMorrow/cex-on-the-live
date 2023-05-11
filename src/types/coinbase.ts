@@ -40,3 +40,24 @@ export const schemaCoinbaseGetAccountResponse = z.object({
   pagination: z.object({}).passthrough(),
   data: z.array(schemaCoinbaseCurrencyAccount),
 });
+
+export const schemaCoinbaseAccountAddress = z.object({
+    "id": z.string(),
+    "address": z.string(),
+    "name": z.string(),
+    "created_at": z.string(),
+    "updated_at": z.string(),
+    "network": z.string(),
+    "resource": z.literal("address"),
+    "resource_path": z.string(),
+});
+
+export type CoinbaseAccountAddress = z.infer<
+  typeof schemaCoinbaseAccountAddress
+>;
+
+export const schemaCoinbaseGetAddressesResponse = z.object({
+    pagination: z.object({}).passthrough(),
+    data: z.array(schemaCoinbaseAccountAddress),
+  });
+  
