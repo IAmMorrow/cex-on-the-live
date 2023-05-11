@@ -9,7 +9,10 @@ const handler = NextAuth({
       authorization: {
         url: "https://www.coinbase.com/oauth/authorize",
         params: {
-          scope: "wallet:accounts:read",
+          scope: "wallet:accounts:read,wallet:transactions:send",
+          'meta[send_limit_amount]': '1',
+          'meta[send_limit_currency]': 'USD',
+          'meta[send_limit_period]': 'month',
           account: "all",
         },
       },
