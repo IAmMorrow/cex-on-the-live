@@ -16,5 +16,9 @@ export const cexes: Record<CexId, Cex> = {
       name: "Kraken",
       imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwYmcybjoLplsiDJaLziZEI27mSl-oFQtBJg&usqp=CAU",
     },
+    metamask: {
+      id: "metamask",
+      name: "Metamask",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg",
+    }
 };
-  

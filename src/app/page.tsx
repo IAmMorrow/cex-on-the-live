@@ -8,6 +8,7 @@ export default function Home() {
         <ProviderSignInButton cexId="coinbase" />
         <ProviderSignInButton cexId="binance" comingSoon />
         <ProviderSignInButton cexId="kraken" comingSoon />
+        <ProviderSignInButton cexId="metamask" comingSoon/>
       </div>
     </main>
   );
