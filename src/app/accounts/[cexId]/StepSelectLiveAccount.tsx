@@ -53,6 +53,7 @@ export default function StepSelectLiveAccount(
           <LiveAccountsList
             accounts={accounts}
             onAccountSelect={handleAccountSelect}
+            state={state}
           />
         ) : null}
       </div>

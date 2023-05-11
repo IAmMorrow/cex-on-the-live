@@ -13,6 +13,7 @@ import {
 import { AppState } from "./type";
 import { useAccounts } from "@ledgerhq/wallet-api-client-react";
 import { schemaSendTransactionResponse } from "@/types/api";
+import Image from "next/image";
 
 type SummaryProps = {};
 
@@ -21,19 +22,15 @@ function Summary(props: SummaryProps) {
     <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6 text-sm">
       <div className="flex justify-between">
         <span>Asset to transfer</span>
-        <div>Ethereum</div>
+        <div>Litecoin</div>
       </div>
       <div className="flex justify-between">
         <span>Amount</span>
-        <div>Ethereum</div>
-      </div>
-      <div className="flex justify-between">
-        <span>Fees</span>
-        <div>Ethereum</div>
+        <div>0.0012 LTC</div>
       </div>
       <div className="flex justify-between">
         <span>Account</span>
-        <div>Ethereum</div>
+        <div>Litecoin 1</div>
       </div>
     </div>
   );
@@ -153,11 +150,33 @@ export default function StepSummary(props: StepSummaryProps) {
           <h1 className="font-semibold text-2xl">Summary</h1>
 
           <div className="flex flex-col my-6 w-full space-y-3">
-            <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
-              coinbase
+            <div className="w-full rounded-xl p-4 bg-neutral-800 flex flex-row items-center">
+              <div className="mr-3">
+                <Image
+                  src={`/icons/coinbase.png`}
+                  width={48}
+                  height={48}
+                  alt={`Logo of coinbase`}
+                />
+              </div>
+              <div>
+                <div className="text-sm text-neutral-300">From</div>
+                <div className="text-m">Coinbase</div>
+              </div>
             </div>
-            <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
-              ledger live
+            <div className="w-full rounded-xl p-4 bg-neutral-800 flex flex-row items-center">
+              <div className="mr-3">
+                <Image
+                  src={`/icons/ledger.png`}
+                  width={48}
+                  height={48}
+                  alt={`Logo of ledger`}
+                />
+              </div>
+              <div>
+                <div className="text-sm text-neutral-300">To</div>
+                <div className="text-m">Ledger Live</div>
+              </div>
             </div>
             <Summary />
           </div>

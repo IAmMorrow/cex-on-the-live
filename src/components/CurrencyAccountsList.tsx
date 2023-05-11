@@ -12,16 +12,18 @@ type CurrencyAccountsListProps = {
 export function CurrencyAccountsList(props: CurrencyAccountsListProps) {
   const { accounts, onAccountSelect } = props;
 
+  const filteredAccounts = accounts.filter(
+    (account) => Number(account.balance) > 0
+  );
+
   return (
     <div className="">
-      {accounts.map((account) => (
+      {filteredAccounts.map((account) => (
         <Row key={account.id} onClick={() => onAccountSelect(account.id)}>
           <div className="flex items-center">
             <div className="rounded-full overflow-hidden">
               <Image
-                src={
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/2048px-Bitcoin.svg.png"
-                }
+                src={`/icons/${account.ticker.toLowerCase()}.png`}
                 width={48}
                 height={48}
                 alt={`Logo of ${account.currency}`}
