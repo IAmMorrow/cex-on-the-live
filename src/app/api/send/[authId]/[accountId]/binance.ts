@@ -1,7 +1,7 @@
 import { CexSendHandler } from "./type";
 
 const send: CexSendHandler = async () => {
-    return [];
+    return "OK";
 }
 
 export default send;

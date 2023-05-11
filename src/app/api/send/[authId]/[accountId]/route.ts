@@ -1,6 +1,5 @@
-import { GetAccountResponse, GetAddressesResponse, schemaGetAccountParams } from "@/types/api";
+import { GetAccountResponse, GetAddressesResponse, SendTransactionResponse, schemaGetAccountParams, schemaSendTransactionParams } from "@/types/api";
 import { CexId } from "@/types/cex";
-// import { getServerSession } from 'next-auth';
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { CexSendHandler } from "./type";
@@ -12,7 +11,7 @@ const CexSendTransactionHandler: Record<CexId, CexSendHandler> = {
   "binance": binanceSend,
   "coinbase": coinbaseSend,
   "kraken": krakenSend,
-  "metamask": async () => []
+  "metamask": async () => "OK"
 }
 
 type RouteParams = {
@@ -38,14 +37,28 @@ export async function GET(
     throw new Error(`no authId ${params.authId} in token`);
   }
 
+  const rawQuery = {
+    currency: req.nextUrl.searchParams.get("currency"),
+    amount: req.nextUrl.searchParams.get("amount"),
+    to: req.nextUrl.searchParams.get("to"),
+    twoFactorCode: req.nextUrl.searchParams.get("twoFactorCode") || undefined,
+  }
+
+  console.log({rawQuery});
+
+  const { to, currency, amount, twoFactorCode } = schemaSendTransactionParams.parse(rawQuery);
+
+
   const sendTransaction = CexSendTransactionHandler[auth.cexId];
 
-  // TODO
-  const addresses = await sendTransaction(auth, params.accountId, 1, "BTC", "0x000");
+  const result = await sendTransaction(auth, params.accountId, amount, currency, to, twoFactorCode);
 
-  const response: GetAddressesResponse = {
-    addresses,
+  
+
+  const response: SendTransactionResponse = {
+    result,
   };
+
 
   return NextResponse.json(response);
 }

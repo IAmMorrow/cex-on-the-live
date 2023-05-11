@@ -2,6 +2,7 @@
 
 import { cexes } from "@/app/data/cex";
 import { CexId } from "@/types/cex";
+import { useRouter } from "next/navigation";
 import {
   useCallback,
   SetStateAction,
@@ -11,6 +12,7 @@ import {
 } from "react";
 import { AppState } from "./type";
 import { useAccounts } from "@ledgerhq/wallet-api-client-react";
+import { schemaSendTransactionResponse } from "@/types/api";
 
 type SummaryProps = {};
 
@@ -45,6 +47,10 @@ type StepSummaryProps = {
 
 export default function StepSummary(props: StepSummaryProps) {
   const { state, setState, cexId } = props;
+  const router = useRouter();
+
+  const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  const [twoFactorCode, setTwoFactorCode] = useState<string | null>(null);
 
   const cex = cexes[cexId];
   const { accounts } = useAccounts();
@@ -78,21 +84,26 @@ export default function StepSummary(props: StepSummaryProps) {
     params.set("currency", cexAccount.ticker);
     params.set("amount", state.amount);
 
+    if (twoFactorCode !== null) {
+      params.set("twoFactorCode", twoFactorCode);
+    }
+
     console.log(`/api/send/${cexId}/${state.fromAccount}?${params.toString()}`);
 
     const response = await fetch(
       `/api/send/${cexId}/${state.fromAccount}?${params.toString()}`
     );
     const rawData = await response.json();
-    console.log({ rawData });
-  }, [
-    accounts,
-    cexId,
-    state.amount,
-    state.cexAccounts,
-    state.fromAccount,
-    state.toAccount,
-  ]);
+    const { result } = schemaSendTransactionResponse.parse(rawData);
+
+    if (result === "2FA") {
+      setTwoFactorRequired(true);
+    }
+
+    if (result === "OK") {
+      router.replace("/success");
+    }
+  }, [accounts, cexId, state, router, twoFactorCode]);
 
   const currencyAccount = useMemo(() => {
     const cexAccounts =
@@ -106,26 +117,61 @@ export default function StepSummary(props: StepSummaryProps) {
     return null;
   }
 
+  console.log(twoFactorCode);
+
   return (
     <>
-      <h1 className="font-semibold text-2xl">Summary</h1>
-      <div className="flex flex-col my-6 w-full space-y-3">
-        <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
-          coinbase
-        </div>
-        <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
-          ledger live
-        </div>
-        <Summary />
-      </div>
-      <div className="align-bottom mt-auto py-4">
-        <button
-          className="w-full h-12 text-neutral-800 bg-white rounded-xl"
-          onClick={handleValidate}
-        >
-          Confirm transaction
-        </button>
-      </div>
+      {twoFactorRequired ? (
+        <>
+          <h1 className="font-semibold text-2xl">Enter 2FA Code</h1>
+
+          <div className="flex flex-col my-6 w-full space-y-3">
+            <div className="flex flex-row w-full items-end justify-center">
+              <input
+                onChange={(e) => {
+                  setTwoFactorCode(e.currentTarget.value);
+                }}
+                type="text"
+                value={twoFactorCode || ""}
+                className={`text-neutral-50 text-[56px] leading-10 appearance-none bg-transparent border-none focus:outline-none`}
+                placeholder="XXXXXXX"
+                aria-label="2FA Code"
+              />
+            </div>
+          </div>
+          <div className="align-bottom mt-auto py-4">
+            <button
+              className="w-full h-12 text-neutral-800 bg-white rounded-xl"
+              onClick={handleValidate}
+            >
+              Confirm 2FA
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 className="font-semibold text-2xl">Summary</h1>
+
+          <div className="flex flex-col my-6 w-full space-y-3">
+            <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
+              coinbase
+            </div>
+            <div className="w-full rounded-xl p-4 bg-neutral-800 space-y-6">
+              ledger live
+            </div>
+            <Summary />
+          </div>
+          <div className="align-bottom mt-auto py-4">
+            <button
+              className="w-full h-12 text-neutral-800 bg-white rounded-xl"
+              onClick={handleValidate}
+            >
+              Confirm transaction
+            </button>
+          </div>
+        </>
+      )}
+      <></>
     </>
   );
 }

@@ -48,6 +48,13 @@ export const schemaSendTransactionParams = z.object({
     currency: z.string(),
     amount: z.string(),
     to: z.string(),
+    twoFactorCode: z.string().optional(),
 });
 
 export type GetSendTransactionParams = z.infer<typeof schemaSendTransactionParams>;
+
+export const schemaSendTransactionResponse = z.object({
+    result: z.enum(["OK", "2FA"])
+});
+
+export type SendTransactionResponse = z.infer<typeof schemaSendTransactionResponse>;
