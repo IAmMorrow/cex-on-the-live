@@ -1,4 +1,3 @@
-import { WalletAPIProvider } from "@ledgerhq/wallet-api-client-react";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { WalletAPIProviderWrapper } from "./WalletAPIProvider";
@@ -17,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} px-4 w-full`}>
+      <body className={`${inter.className} px-4 w-full max-w-xl mx-auto`}>
         <main className="pt-6 w-full h-screen flex">
           <WalletAPIProviderWrapper>{children}</WalletAPIProviderWrapper>
         </main>
